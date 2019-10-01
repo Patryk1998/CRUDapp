@@ -1,0 +1,72 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Application</title>
+</head>
+<body>
+
+<div th:fragment="ceny">
+    <table class="table table-sm">
+        <thead>
+        <tr>
+            <th scope="col" class="text-center">TOWAR</th>
+            <th scope="col" class="text-center">CENA</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${ceny}">
+            <td class="text-center" th:text="${c.rodzajTowaru.nazwa}"></td>
+            <td class="text-center" th:text="${c.cena}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:fragment="klientSelection">
+    <label for="klient-select" class="col-sm-2 col-form-label">KLIENT</label>
+    <div class="col-sm-10">
+        <select class="form-control" id="klient-select">
+            <option selected value> -- wybierz klienta -- </option>
+            <option th:each="k : ${klienci}" th:text="${k.nazwa}" th:value="${k.id}"></option>
+        </select>
+    </div>
+</div>
+
+    <div th:fragment="cenySettings">
+        <table class="table table-sm">
+            <thead>
+            <tr>
+                <th scope="col" class="text-center">TOWAR</th>
+                <th scope="col" class="text-center">CENA</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${ceny}">
+                <td class="text-center" th:text="${c.rodzajTowaru.nazwa}"></td>
+                <td class="text-center" th:text="${c.cena}"></td>
+                <td><button class="btn-secondary btn-sm" th:onclick="'javascript:deleteCena(' + ${c.id} + ')'">USUŃ</button></td>
+            </tr>
+            </tbody>
+        </table>
+        <form id="cena-form" th:object="${cena}">
+            <div class="row">
+                <div class="column-2">
+                    <select class="form-control" name="rodzajTowaruNazwa">
+                        <option th:each="r : ${rodzajeTowaru}" th:text="${r.nazwa}"></option>
+                    </select>
+                </div>
+                <div class="column-2">
+                    <input  type="number" class="form-control" name="cena" id="cena-input">
+                </div>
+            </div>
+            <input type="button" id="cena-form-button" th:onclick="dodajEdytujCena()" class="btn btn-secondary btn-sm btn-block" value="DODAJ/EDYTUJ"/>
+        </form>
+    </div>
+</body>
+</html>
+
+
+
+
+

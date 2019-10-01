@@ -1,0 +1,20 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Application</title>
+</head>
+<body>
+
+    <div th:fragment="klienciList" class="container">
+        <div th:replace="klientParts :: klientForm"></div>
+        <div th:replace="klientParts :: klienciList"></div>
+    </div>
+
+</body>
+</html>
+
+
+
+
+

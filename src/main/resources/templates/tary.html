@@ -1,0 +1,18 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Application</title>
+</head>
+<body>
+    <div th:fragment="samochodyList" class="container">
+        <div th:replace="samochodParts :: taryForm"></div>
+        <div th:replace="samochodParts :: taryList"></div>
+    </div>
+</body>
+</html>
+
+
+
+
+

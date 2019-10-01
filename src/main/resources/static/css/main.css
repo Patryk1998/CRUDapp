@@ -1,0 +1,29 @@
+.nav-item {
+    background-color: #343a40;
+    border: solid yellow;
+}
+
+.hidden{
+    width: 26%;
+}
+
+.off{
+    display: none;
+}
+
+.column-2 {
+    width: 50%;
+}
+
+.column-4 {
+     width: 25%;
+}
+
+.column-5 {
+    width: 20%;
+}
+
+.row {
+margin-left: 0px;
+margin-right: 0px;
+}

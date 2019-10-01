@@ -1,0 +1,51 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Application</title>
+</head>
+<body>
+    <div th:fragment="ustawieniaList">
+        <div class="container">
+            <div th:if="${message}!=null" style="margin-bottom: 10px;">
+                <div class="list-group-item">
+                    <span th:text="${message}"></span>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-block" style="margin-bottom: 10px;" type="button" data-toggle="collapse" data-target="#ceny-change" aria-expanded="false" aria-controls="ceny-change">EDYTUJ CENNIKI</button>
+            <div style="margin-bottom: 20px;" class="collapse" id="ceny-change">
+                <div class="row">
+                    <div class="column-2"><div th:replace="cennikParts :: klientSelection"></div></div>
+                    <div class="column-2"><div id="cenyList"></div></div>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#rodzaje-change" aria-expanded="false" aria-controls="rodzaje-change">EDYTUJ RODZAJE TOWARÓW</button>
+            <div class="collapse" id="rodzaje-change">
+                <div id="rodzajeList"><div th:replace="rodzajeTowaruParts :: rodzajeList"></div></div>
+                <div th:replace="rodzajeTowaruParts :: rodzajTowaruAdd"></div>
+            </div>
+            <script>
+                $(document).ready(function(){
+                    $("#klient-select").change(function() {
+                        var url = '/ceny/of/'+$("#klient-select option:selected").val();
+                        $.ajax({
+                            type: "GET",
+                            url: url,
+                            success: function(response) {
+                                $("#cenyList").html(response);
+                            }
+                        });
+                    });
+                });
+            </script>
+            <script src="/js/cennikParts.js"></script>
+            <script src="/js/rodzajeTowaruParts.js"></script>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+

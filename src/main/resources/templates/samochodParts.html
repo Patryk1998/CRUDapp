@@ -1,0 +1,95 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Application</title>
+</head>
+<body>
+
+    <div th:fragment="taryList">
+        <table id="table" class="table">
+            <thead>
+            <tr>
+                <th scope="col" class="column-4 text-center">REJESTRACJA</th>
+                <th scope="col" class="column-4 text-center">TARA</th>
+                <th scope="col" class="column-4 text-center">INFO</th>
+                <th scope="col" class="column-4 text-center">KLIENT</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="s : ${samochody}">
+                <td class="text-center"><a th:text="${s.rejestracja}" th:href="@{'/tary/edit/' + ${s.id}}"></a></td>
+                <td th:text="${s.tara}" class="text-center"></td>
+                <td th:text="${s.info}" class="text-center"></td>
+                <td class="hidden text-center"><a th:each="k, index : ${s.klienci}" th:class="${!index.first} ? 'off'" th:utext="${k.nazwa} + '<br>'"></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:fragment="taryForm">
+        <form th:action="(${operation}=='edit') ? @{'/tary/edit/' + ${samochod.id}} : @{'/tary/add'}" th:object="${samochod}" method="post">
+            <input th:if="${operation} != 'edit'" type="submit" class="btn btn-primary btn-block" value="DODAJ TARE">
+            <div th:class="${operation} != 'edit' ? row">
+                <div th:class="${operation} == 'edit' ? 'form-group row' : 'column-4'">
+                    <label th:if="${operation} == 'edit'" for="rejestracja-input" class="col-sm-2 col-form-label">REJESTRACJA</label>
+                    <div th:class="${operation} == 'edit' ? col-sm-10">
+                        <input type="text" th:value="(${operation}=='edit') ? (${samochod.rejestracja})" class="form-control" name="rejestracja" id="rejestracja-input" required>
+                    </div>
+                </div>
+                <div th:class="${operation} == 'edit' ? 'form-group row' : 'column-4'">
+                    <label th:if="${operation} == 'edit'" for="tara-input" class="col-sm-2 col-form-label">TARA</label>
+                    <div th:class="${operation} == 'edit' ? col-sm-10">
+                        <input type="number" th:value="(${operation}=='edit') ? (${samochod.tara})" class="form-control" name="tara" id="tara-input" required>
+                    </div>
+                </div>
+                <div th:class="${operation} == 'edit' ? 'form-group row' : 'column-4'">
+                    <label th:if="${operation} == 'edit'" for="info-input" class="col-sm-2 col-form-label">INFO</label>
+                    <div th:class="${operation} == 'edit' ? col-sm-10">
+                        <input type="text" th:value="(${operation}=='edit') ? (${samochod.info})" class="form-control" name="info" id="info-input">
+                    </div>
+                </div>
+                <div th:if="${operation} != 'edit'" th:class="${operation} == 'edit' ? 'form-group row' : 'column-4'">
+                    <select class="form-control" name="klientName" id="klienci-input">
+                        <option th:each="n : ${nazwyKlientow}" th:text="${n}"></option>
+                    </select>
+            </div>
+            </div>
+            <input th:if="${operation} == 'edit'" type="submit" class="btn btn-primary" style="margin-bottom: 30px;" value="ZAPISZ ZMIANY">
+        </form>
+    </div>
+
+    <div id="klientsList" th:fragment="klientsList">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>NAZWA</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="k : ${klienci}">
+                <td th:text="${k.nazwa}"></td>
+                <td>
+                    <button th:onclick="'javascript:deleteKlient(' + ${k.id} + ', ' + ${samochod.id} + ')'" class="btn btn-primary">USUN</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="form-inline">
+            <label for="klient-input" class="col-sm-2 col-form-label">KLIENT</label>
+            <input  type="text" class="form-control" name="klientName" id="klient-input" list="typesList">
+            <datalist id="typesList">
+                <option th:each="k : ${klienciNotAttached}" th:value="${k.nazwa}">
+            </datalist>
+            <button th:onclick="'javascript:addKlient(' + ${samochod.id} + ')'" class="btn btn-primary">DODAJ</button>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+

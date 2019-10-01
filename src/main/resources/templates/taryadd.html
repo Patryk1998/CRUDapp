@@ -1,0 +1,21 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Application</title>
+</head>
+<body>
+
+    <div th:fragment="taryForm">
+
+        <div class="container">
+            <div th:replace="samochodParts :: taryForm"></div>
+
+            <div th:if="${operation} == 'edit'">
+                <div th:replace="samochodParts :: klientsList"></div>
+            </div>
+        </div>
+        <script src="/js/taryadd.js"></script>
+    </div>
+</body>
+</html>

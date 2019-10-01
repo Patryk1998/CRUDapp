@@ -1,0 +1,39 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Application</title>
+</head>
+<body>
+    <div th:fragment="rodzajeList">
+        <table id="rodzaje-table" class="table table-sm">
+            <thead>
+            <tr>
+                <th scope="col" style="width: 50%;" class="text-center">NAZWA</th>
+                <th scope="col" style="width: 25%;"class="text-center"></th>
+                <th scope="col" style="width: 25%;" class="text-center"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r : ${rodzajeTowaru}">
+                <td th:id="${r.id}" class="text-center" style="width: 50%;" contenteditable="false" th:text="${r.nazwa}"></td>
+                <td class="text-center" style="width: 25%;"><button class="btn btn-secondary btn-sm" th:onclick="'javascript:updateRodzaj(' + ${r.id} + ')'">EDYTUJ</button></td>
+                <td class="text-center" style="width: 25%;"><button class="btn btn-secondary btn-sm" th:onclick="'javascript:deleteRodzaj(' + ${r.id} + ')'">USUŃ</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:fragment="rodzajTowaruAdd">
+        <form id="rodzaj-form" th:object="${rodzajTowaru}">
+            <input type="text" class="form-control" name="nazwa" id="nazwa-input">
+            <input type="button" th:onclick="addRodzaj()" class="btn btn-secondary btn-sm btn-block" value="DODAJ"/>
+        </form>
+    </div>
+</body>
+</html>
+
+
+
+
+

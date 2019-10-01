@@ -1,0 +1,145 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Application</title>
+</head>
+<body>
+
+    <div th:fragment="wuzetkiList">
+        <table id="table" class="table">
+            <thead>
+            <tr class="d-flex">
+                <th scope="col" style="width: 15%;" class="text-center">NUMER</th>
+                <th scope="col" style="width: 10%;" class="text-center">ILOSC</th>
+                <th scope="col" style="width: 25%;" class="text-center">RODZAJ</th>
+                <th scope="col" style="width: 25%;" class="text-center">KLIENT</th>
+                <th scope="col" style="width: 15%;" class="text-center">DATA</th>
+                <th scope="col" style="width: 10%;" class="text-center"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="d-flex" th:each="w : ${wuzetki}">
+                <td style="width: 15%;" class="text-center"><a th:text="${w.numer}" th:href="@{'/wuzetki/edit/' + ${w.id}}"></a></td>
+                <td style="width: 10%;" class="text-center" th:text="${w.ilosc}"></td>
+                <td style="width: 25%;" class="text-center" th:text="${w.rodzaj.nazwa}"></td>
+                <td style="width: 25%;" class="text-center" th:text="${w.klient.nazwa}"></td>
+                <td style="width: 15%;" class="text-center" th:text="${w.data}"></td>
+                <td style="width: 10%;" class="text-center"><button th:onclick="'javascript:deleteWuzetka(' + ${w.id} + ', $(this))'" class="btn btn-primary">PAID</button></td>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:fragment="wuzetkiForm">
+        <form th:action="(${operation}=='edit') ? @{'/wuzetki/edit/' + ${wuzetka.id}} : @{'/wuzetki/add'}" th:object="${wuzetka}" method="post">
+            <input th:if="${operation} != 'edit'" type="submit" class="btn btn-primary btn-block" value="DODAJ WUZETKE"/>
+            <div th:class="${operation} != 'edit' ? row">
+                <div th:class="${operation} == 'edit' ? 'form-group row'" th:style="${operation} != 'edit' ? 'width:15%;' ">
+                    <label th:if="${operation} == 'edit'" for="numer-input" class="col-sm-2 col-form-label">NUMER</label>
+                    <div th:class="${operation} == 'edit' ? col-sm-10">
+                        <input type="text" th:value="(${operation}=='edit') ? (${wuzetka.numer})" class="form-control" name="numer" id="numer-input" required autofocus>
+                    </div>
+                </div>
+                <div th:class="${operation} == 'edit' ? 'form-group row'" th:style="${operation} != 'edit' ? 'width:10%;' ">
+                    <label th:if="${operation} == 'edit'" for="ilosc-input" class="col-sm-2 col-form-label">ILOSC</label>
+                    <div th:class="${operation} == 'edit' ? col-sm-10">
+                        <input type="number" th:value="(${operation}=='edit') ? (${wuzetka.ilosc})" class="form-control" name="ilosc" id="ilosc-input" required>
+                    </div>
+                </div>
+                <div th:class="${operation} == 'edit' ? 'form-group row'" th:style="${operation} != 'edit' ? 'width:25%;' ">
+                    <label th:if="${operation} == 'edit'" for="rodzaj-input" class="col-sm-2 col-form-label">RODZAJ</label>
+                    <div th:class="${operation} == 'edit' ? col-sm-10">
+                        <select class="form-control" name="rodzaj" id="rodzaj-input">
+                            <option th:each="t : ${rodzajeTowaru}" th:text="${t.nazwa}" th:selected="(${operation}=='edit') ? ${#strings.contains(t.nazwa, wuzetka.rodzaj.nazwa)}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div th:class="${operation} == 'edit' ? 'form-group row'" th:style="${operation} != 'edit' ? 'width:25%;' ">
+                    <label th:if="${operation} == 'edit'" for="klient-input" class="col-sm-2 col-form-label">KLIENT</label>
+                    <div th:class="${operation} == 'edit' ? col-sm-10">
+                        <select class="form-control" name="klientName" id="klient-input">
+                            <option th:each="n : ${nazwyKlientow}" th:text="${n}" th:selected="(${operation}=='edit') ? ${#strings.contains(n, wuzetka.klient.nazwa)}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div th:class="${operation} == 'edit' ? 'form-group row'" th:style="${operation} != 'edit' ? 'width:15%;' ">
+                    <label th:if="${operation} == 'edit'" for="data-input" class="col-sm-2 col-form-label">DATA</label>
+                    <div th:class="${operation} == 'edit' ? col-sm-10">
+                        <input type="date" th:id="${operation}!='edit' ? data-input" th:value="(${operation}=='edit') ? (${wuzetka.data})" class="form-control" name="data" id="data-input" style="height:38px;">
+                    </div>
+                </div>
+            </div>
+            <input th:if="${operation} == 'edit'" type="submit" class="btn btn-primary" style="margin-bottom: 30px;" value="ZAPISZ ZMIANY">
+        </form>
+    </div>
+
+    <div th:fragment="countedValues">
+        <div class="list-group-item" style="border: 3px solid green; margin-bottom: 10px;">
+            <ul class="list-inline" style="margin-bottom: 0px;">
+                <li th:each="entry: ${ilosci}" class="list-inline-item">
+                    <span th:text="${entry.key.nazwa}"></span>: <span th:text="${entry.value}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div th:fragment="wuzetkiFilters">
+        <div class="collapse" id="filters">
+            <div class="container">
+                <div class="card card-body">
+                    <form th:action="@{/wuzetki/filters}" th:object="${filtry}" method="post">
+                        <div class="row">
+                            <div class="column-2">
+                                <div class="form-group row">
+                                    <label for="klient-select" class="col-sm-3 col-form-label">KLIENT</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="klientName" id="klient-select">
+                                            <option selected value> -- wybierz klienta -- </option>
+                                            <option th:each="n : ${nazwyKlientow}" th:text="${n}"  th:selected="${filters}!=null ? (${filters.klientName}!='' ? ${#strings.contains(n, filters.klientName)})"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="from-input" class="col-sm-3 col-form-label">DATA OD</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control" th:value="${filters}!=null ? ${filters.from}" name="from" id="from-input">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="to-input" class="col-sm-3 col-form-label">DATA DO</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control" th:value="${filters}!=null ? ${filters.to}" name="to" id="to-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="column-2" style="padding-left: 10%;">
+                                <th:block th:each="t : ${rodzajeTowaru}">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" name="rodzajTowaru" th:checked="${filters}!=null ? ${#lists.contains(filters.rodzajTowaru, t.nazwa)}" type="checkbox" th:value="${t}" th:id="${t}"/>
+                                        <label class="custom-control-label" th:text="${t.nazwa}" th:for="${t.nazwa}"></label>
+                                    </div>
+                                </th:block>
+                                <div style="padding-top: 20px;">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" name="withoutKlient" th:checked="${filters}!=null ? ${#lists.contains(filters.withoutKlient, 'MOTA')}" type="checkbox" value="MOTA" id="mota-input"/>
+                                        <label class="custom-control-label" for="mota-input">pokaż bez moty</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <input type="submit" class="btn btn-primary" value="FILTRUJ">
+                            <button th:if="${filters}!=null" th:onclick="'javascript:deleteWuzetki()'" class="btn btn-primary" style="margin-left:15px;">ZAPŁACONE</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+

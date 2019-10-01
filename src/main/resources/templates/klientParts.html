@@ -1,0 +1,72 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Application</title>
+</head>
+<body>
+
+    <div th:fragment="klienciList">
+        <table id="table" class="table">
+            <thead>
+            <tr>
+                <th scope="col" class="text-center">NAZWA</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="k : ${klienci}">
+                <td class="text-center"><a th:text="${k.nazwa}" th:href="@{'/klienci/edit/' + ${k.id}}"></a></td>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:fragment="klientForm">
+        <form th:action="(${operation}=='edit') ? @{'/klienci/edit/' + ${klient.id}} : @{'/klienci/add'}" th:object="${klient}" method="post">
+            <button th:if="${operation} != 'edit'" type="submit" class="btn btn-primary btn-block">DODAJ KLIENTA</button>
+            <div th:class="${operation} != 'edit' ? row">
+                <div th:class="${operation} == 'edit' ? 'form-group row' : 'col'">
+                    <label th:if="${operation} == 'edit'" for="info-input" class="col-sm-2 col-form-label">NAZWA</label>
+                    <div th:class="${operation} == 'edit' ? col-sm-10">
+                        <input th:value="(${operation}=='edit') ? (${klient.nazwa})" type="text" class="form-control" name="nazwa" id="info-input" required>
+                    </div>
+                </div>
+            </div>
+                <button th:if="${operation} == 'edit'" type="submit" class="btn btn-primary" style="margin-bottom: 30px;">ZAPISZ ZMIANY</button>
+        </form>
+    </div>
+
+    <div id="samochodyList" th:fragment="samochodyList">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>REJESTRACJA</th>
+                <th>TARA</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="s : ${samochody}">
+                <td th:text="${s.rejestracja}"></td>
+                <td th:text="${s.tara}"></td>
+                <td>
+                    <button th:onclick="'javascript:deleteSamochod(' + ${s.id} + ',' + ${klient.id} + ')'" class="btn btn-primary" >USUN</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="form-inline">
+            <label for="samochod-input" class="col-sm-2 col-form-label">SAMOCHOD</label>
+            <input  type="text" class="form-control" name="klientName" id="samochod-input" list="samochody-list">
+            <datalist id="samochody-list">
+                <option th:each="s : ${samochodyNotAttached}" th:value="${s.rejestracja}">
+            </datalist>
+            <button th:onclick="'javascript:addSamochod(' + ${klient.id} + ')'" class="btn btn-primary">DODAJ</button>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+

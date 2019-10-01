@@ -1,0 +1,79 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Application</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="margin-bottom: 30px;">
+        <div class="container">
+            <a class="navbar-brand" href="#">aaaaaaaaaaaa</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/tary/all">SAMOCHODY</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/klienci/all">KLIENCI</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/wuzetki/all">WUZETKI</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/settings">USTAWIENIA</a>
+                    </li>
+                </ul>
+                <button th:if="${template} == 'wuzetki'" class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#filters" aria-expanded="false" aria-controls="filters">
+                    Advanced
+                </button>
+                <input class="form-control" style="width: 25%;" placeholder="Szukaj..." id="search-input"/>
+            </div>
+        </div>
+    </nav>
+    <div th:if="${template} == 'ustawienia'">
+        <div th:replace="ustawienia :: ustawieniaList"></div>
+    </div>
+    <div th:if="${template} == 'wuzetki'">
+        <div th:replace="wuzetkaParts :: wuzetkiFilters"></div>
+    </div>
+    <div th:if="${template} == 'tary'">
+        <div th:replace="tary :: samochodyList"></div>
+    </div>
+    <div th:if="${template} == 'samochodForm'">
+        <div th:replace="taryadd :: taryForm"></div>
+    </div>
+    <div th:if="${template} == 'klienci'">
+        <div th:replace="klienci :: klienciList"></div>
+    </div>
+    <div th:if="${template} == 'klientForm'">
+        <div th:replace="klienciadd :: klienciForm"></div>
+    </div>
+    <div th:if="${template} == 'wuzetki'">
+        <div th:replace="wuzetki :: wuzetkiList"></div>
+    </div>
+    <div th:if="${template} == 'wuzetkaForm'">
+        <div th:replace="wuzetkiadd :: wuzetkiForm"></div>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

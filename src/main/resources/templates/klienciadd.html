@@ -1,0 +1,20 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Application</title>
+</head>
+<body>
+
+    <div th:fragment="klienciForm">
+        <div class="container">
+            <div class="row">
+                <div class="column-2"><div th:replace="klientParts :: klientForm"></div></div>
+                <div class="column-2"><div th:replace="cennikParts :: ceny"></div></div>
+            </div>
+            <div th:replace="klientParts :: samochodyList"></div>
+        </div>
+        <script src="/js/klienciadd.js"></script>
+    </div>
+</body>
+</html>
